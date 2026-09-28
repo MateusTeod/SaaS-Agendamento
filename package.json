@@ -1,0 +1,21 @@
+{
+  "name": "saas-agendamento",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm --workspace @saas-agendamento/api run start:dev",
+    "dev:web": "npm --workspace @saas-agendamento/web run dev",
+    "build:api": "npm --workspace @saas-agendamento/api run build",
+    "build:web": "npm --workspace @saas-agendamento/web run build",
+    "lint:api": "npm --workspace @saas-agendamento/api run lint",
+    "lint:web": "npm --workspace @saas-agendamento/web run lint",
+    "test:api": "npm --workspace @saas-agendamento/api run test"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0"
+  }
+}
