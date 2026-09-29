@@ -1,9 +1,12 @@
+import { Injectable } from '@nestjs/common';
+
 export type AuthTokenPayload = {
   sub: string;
   tenantId: string;
   roles: string[];
 };
 
+@Injectable()
 export class AuthService {
   private readonly secret = 'development-secret-key';
 

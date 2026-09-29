@@ -20,17 +20,18 @@ export class BusinessService {
   private readonly businesses = new Map<string, Business>();
 
   createBusiness(input: BusinessCreateInput): Business {
-    const tenantKey = `${input.tenantId}:${input.slug.toLowerCase()}`;
+    const normalizedSlug = input.slug.trim().toLowerCase();
+    const tenantKey = `${input.tenantId}:${normalizedSlug}`;
 
     if (this.businesses.has(tenantKey)) {
       throw new Error('Slug already exists for this tenant');
     }
 
     const business: Business = {
-      id: `business-${Date.now()}`,
-      name: input.name,
-      slug: input.slug.toLowerCase(),
-      segment: input.segment,
+      id: `business-${Date.now()}-${this.businesses.size}`,
+      name: input.name.trim(),
+      slug: normalizedSlug,
+      segment: input.segment.trim().toLowerCase(),
       tenantId: input.tenantId,
       ownerId: input.ownerId,
       status: 'draft',
@@ -39,5 +40,9 @@ export class BusinessService {
     this.businesses.set(tenantKey, business);
 
     return business;
+  }
+
+  findBySlug(tenantId: string, slug: string): Business | undefined {
+    return this.businesses.get(`${tenantId}:${slug.trim().toLowerCase()}`);
   }
 }

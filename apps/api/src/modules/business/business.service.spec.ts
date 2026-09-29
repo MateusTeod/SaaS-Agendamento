@@ -43,4 +43,24 @@ describe('BusinessService', () => {
       }),
     ).toThrow('Slug already exists for this tenant');
   });
+
+  it('normalizes business data and finds it only inside its tenant', () => {
+    const service = new BusinessService();
+
+    const business = service.createBusiness({
+      name: '  Studio Aurora  ',
+      slug: 'Studio-Aurora',
+      segment: ' Salão ',
+      tenantId: 'tenant-1',
+      ownerId: 'user-1',
+    });
+
+    expect(business).toMatchObject({
+      name: 'Studio Aurora',
+      slug: 'studio-aurora',
+      segment: 'salão',
+    });
+    expect(service.findBySlug('tenant-1', 'STUDIO-AURORA')).toEqual(business);
+    expect(service.findBySlug('tenant-2', 'studio-aurora')).toBeUndefined();
+  });
 });
